@@ -3,6 +3,7 @@ import os
 from modules.phish_guard import PhishGuard
 from modules.deepfake_sentry import DeepFakeSentry
 from modules.image_sentry import ImageSentry
+from modules.docu_guard import DocuGuard  # NEW IMPORT
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
@@ -15,6 +16,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 phish_tool = PhishGuard(UPLOAD_FOLDER)
 deepfake_tool = DeepFakeSentry()
 image_tool = ImageSentry()
+docu_tool = DocuGuard()  # NEW MODULE INIT
 
 @app.route('/')
 def home():
@@ -58,6 +60,22 @@ def scan_image():
     
     result = image_tool.analyze_image(file_path)
     return render_template('result.html', result=result, type='image')
+
+# --- NEW ROUTE FOR DOCUGUARD ---
+@app.route('/scan_document', methods=['POST'])
+def scan_document():
+    if 'document' not in request.files:
+        return redirect(url_for('home'))
+    
+    file = request.files['document']
+    if file.filename == '':
+        return redirect(url_for('home'))
+
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(file_path)
+    
+    result = docu_tool.analyze_document(file_path)
+    return render_template('result.html', result=result, type='document')
 
 if __name__ == '__main__':
     app.run(debug=True)

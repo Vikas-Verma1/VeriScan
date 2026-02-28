@@ -64,13 +64,23 @@ body {
     overflow: hidden; backdrop-filter: blur(12px);
 }
 
+/* --- TABS FIXES --- */
 .custom-nav-pills {
+    display: flex !important; /* Forces horizontal layout */
+    flex-wrap: nowrap;
+    list-style: none !important; /* Removes bullet points */
+    margin: 0 0 1.5rem 0 !important;
     background: rgba(0, 0, 0, 0.5); padding: 0.5rem;
     border-radius: var(--radius-md); gap: 0.5rem; border: 1px solid var(--border-color);
 }
+.custom-nav-pills .nav-item {
+    flex: 1; /* Ensures all tabs take up equal space */
+}
 .custom-nav-pills .nav-link {
+    width: 100%;
     color: var(--text-muted); font-weight: 600; border-radius: 8px;
     padding: 0.75rem 1rem; transition: all 0.3s ease; border: none;
+    text-align: center;
 }
 .custom-nav-pills .nav-link:hover { color: var(--text-main); }
 .custom-nav-pills .nav-link.active {

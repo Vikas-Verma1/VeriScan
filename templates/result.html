@@ -12,56 +12,60 @@
 <div class="grid-bg"></div>
 
 <div class="container py-5">
+    
     <div class="text-center mb-4">
-        <a href="/" class="text-decoration-none text-muted fw-bold">
+        <a href="/" class="text-decoration-none text-light opacity-75 fw-bold hover-white">
             <i class="bi bi-arrow-left"></i> Back to Scanner
         </a>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="result-card p-0 border border-secondary">
+        <div class="col-lg-10 col-xl-8">
+            <div class="result-card p-0 border border-secondary shadow-lg">
                 
                 {% if type == 'phish' %}
-                    <div class="p-4 border-bottom border-secondary text-center" style="background: rgba(0,0,0,0.3);">
+                    <div class="p-4 border-bottom border-secondary text-center" style="background: rgba(175, 64, 255, 0.05);">
                         <h3 class="mb-1 fw-bold" style="color: #af40ff;"><i class="bi bi-shield-lock"></i> PhishGuard Report</h3>
-                        <p class="text-muted mb-0">Domain: <span class="font-monospace text-info">{{ result.domain }}</span></p>
+                        <p class="text-light opacity-75 mb-0">Domain: <span class="font-monospace text-info fw-bold">{{ result.domain }}</span></p>
                     </div>
+                    
                     <div class="p-4 p-md-5">
                         {% if result.screenshot %}
-                            <div class="text-center mb-4">
-                                <img src="{{ url_for('static', filename='uploads/' + result.screenshot) }}" class="img-fluid rounded shadow-sm border border-secondary" style="max-height: 350px;">
+                            <div class="text-center mb-5">
+                                <img src="{{ url_for('static', filename='uploads/' + result.screenshot) }}" class="img-fluid rounded shadow-lg border border-secondary" style="max-height: 400px; object-fit: contain;">
                             </div>
                         {% endif %}
+
                         {% if result.error %}
-                            <div class="alert alert-warning border-0 shadow-sm"><i class="bi bi-exclamation-triangle-fill"></i> <strong>Error:</strong> {{ result.error }}</div>
+                            <div class="alert border border-warning bg-transparent text-warning shadow-sm"><i class="bi bi-exclamation-triangle-fill"></i> <strong>Error:</strong> {{ result.error }}</div>
                         {% else %}
-                            <div class="alert {% if result.alert %}alert-danger{% else %}alert-success{% endif %} border-0 shadow-sm p-4 text-center">
-                                <h4 class="alert-heading fw-bold mb-3 text-dark">
-                                    {% if result.alert %}<i class="bi bi-x-octagon-fill"></i> THREAT DETECTED{% else %}<i class="bi bi-check-circle-fill"></i> SECURE SITE{% endif %}
+                            <div class="alert border {% if result.alert %}border-danger{% else %}border-success{% endif %} bg-transparent shadow-sm p-4 text-center mb-5">
+                                <h4 class="alert-heading fw-bold mb-3 text-light">
+                                    {% if result.alert %}<i class="bi bi-x-octagon-fill text-danger"></i> THREAT DETECTED{% else %}<i class="bi bi-check-circle-fill text-success"></i> SECURE SITE{% endif %}
                                 </h4>
-                                <p class="mb-2 fs-5 text-dark">{{ result.message }}</p>
-                                <span class="badge {% if result.phishing_risk > 50 %}bg-danger{% else %}bg-success{% endif %} badge-custom fs-6">
+                                <p class="mb-3 fs-5 text-light opacity-75">{{ result.message }}</p>
+                                <span class="badge {% if result.phishing_risk > 50 %}bg-danger{% else %}bg-success{% endif %} badge-custom fs-6 px-3 py-2">
                                     Risk Score: {{ result.phishing_risk }}/100
                                 </span>
                             </div>
-                            <div class="card border border-secondary mt-4 bg-transparent">
-                                <div class="card-header border-bottom border-secondary fw-bold pt-3 pb-2 text-info">
+
+                            <div class="card border border-secondary bg-transparent shadow-sm">
+                                <div class="card-header border-bottom border-secondary fw-bold pt-3 pb-2 text-info bg-transparent">
                                     <i class="bi bi-journal-text"></i> AI Reconnaissance Details
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-0">
                                     <ul class="list-group list-group-flush bg-transparent">
-                                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-secondary">
-                                            <span><strong>Requested Details</strong><br><small class="text-muted">Data the site tries to collect</small></span>
-                                            <span class="text-end fw-medium text-light">{% if result.requested_details is string %}{{ result.requested_details }}{% else %}{{ result.requested_details | join(', ') }}{% endif %}</span>
+                                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-secondary py-3">
+                                            <span><strong class="text-light">Requested Details</strong><br><small class="text-light opacity-50">Data the site tries to collect</small></span>
+                                            <span class="text-end fw-medium text-info">{% if result.requested_details is string %}{{ result.requested_details }}{% else %}{{ result.requested_details | join(', ') }}{% endif %}</span>
                                         </li>
-                                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-secondary">
-                                            <span><strong>Ads Detected</strong><br><small class="text-muted">Presence of malicious popups</small></span>
-                                            <span class="text-end fw-medium text-light">{{ result.ads_detected }}</span>
+                                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-secondary py-3">
+                                            <span><strong class="text-light">Ads Detected</strong><br><small class="text-light opacity-50">Presence of malicious popups</small></span>
+                                            <span class="text-end fw-medium text-info">{{ result.ads_detected }}</span>
                                         </li>
-                                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-secondary">
-                                            <span><strong>Domain Analysis</strong><br><small class="text-muted">Typosquatting check</small></span>
-                                            <span class="text-end fw-medium text-light">{{ result.domain_analysis }}</span>
+                                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-0 py-3">
+                                            <span><strong class="text-light">Domain Analysis</strong><br><small class="text-light opacity-50">Typosquatting check</small></span>
+                                            <span class="text-end fw-medium text-info">{{ result.domain_analysis }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -70,101 +74,170 @@
                     </div>
 
                 {% elif type == 'deepfake' %}
-                    <div class="p-4 border-bottom border-secondary text-center" style="background: rgba(0,0,0,0.3);">
+                    <div class="p-4 border-bottom border-secondary text-center" style="background: rgba(0, 221, 235, 0.05);">
                         <h3 class="mb-0 fw-bold" style="color: #00ddeb;"><i class="bi bi-camera-reels"></i> DeepFake Sentry Report</h3>
                     </div>
+
                     <div class="p-4 p-md-5">
-                        <div class="mb-4">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="fw-bold text-muted">Synthetic Media Probability</span>
-                                <span class="fw-bold {% if result.fake_score > 50 %}text-danger{% else %}text-success{% endif %}">{{ result.fake_score }}%</span>
+                        <div class="mb-5">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold text-light opacity-75">Synthetic Media Probability</span>
+                                <span class="fw-bold fs-5 {% if result.fake_score > 50 %}text-danger{% else %}text-success{% endif %}">{{ result.fake_score }}%</span>
                             </div>
                             <div class="progress" style="height: 12px; border-radius: 10px; background: rgba(255,255,255,0.1);">
                                 <div class="progress-bar {% if result.fake_score > 50 %}bg-danger{% else %}bg-success{% endif %}" role="progressbar" style="width: {{ result.fake_score }}%"></div>
                             </div>
                         </div>
-                        <div class="alert {% if result.fake_score > 50 %}alert-danger{% else %}alert-success{% endif %} border-0 shadow-sm p-4 text-center mb-4">
-                            <h4 class="fw-bold mb-2 text-dark">
-                                {% if result.fake_score > 50 %}<i class="bi bi-exclamation-octagon-fill"></i>{% else %}<i class="bi bi-shield-check"></i>{% endif %} 
+
+                        <div class="alert border {% if result.fake_score > 50 %}border-danger{% else %}border-success{% endif %} bg-transparent shadow-sm p-4 text-center mb-5">
+                            <h4 class="fw-bold mb-2 text-light">
+                                {% if result.fake_score > 50 %}<i class="bi bi-exclamation-octagon-fill text-danger"></i>{% else %}<i class="bi bi-shield-check text-success"></i>{% endif %} 
                                 {{ result.status }}
                             </h4>
                             {% if result.fake_score > 50 %}
-                                <div class="mt-3 p-2 bg-white rounded border text-danger fw-bold">
+                                <div class="mt-4 p-2 rounded border border-danger text-danger fw-bold" style="background: rgba(239, 68, 68, 0.1);">
                                     <i class="bi bi-robot"></i> Suspected Model: {{ result.suspected_ai }}
                                 </div>
                             {% endif %}
                         </div>
-                        <div class="row g-3 mb-4">
+
+                        <div class="row g-3 mb-5">
                             <div class="col-md-4">
-                                <div class="card border border-secondary h-100 text-center p-3 shadow-sm" style="background: rgba(0,0,0,0.5);">
-                                    <div class="text-muted small fw-bold text-uppercase mb-2">Frames Analyzed</div>
-                                    <h3 class="mb-0 text-info">{{ result.frames_analyzed }}</h3>
+                                <div class="card border border-secondary h-100 text-center p-3 shadow-sm bg-transparent">
+                                    <div class="text-light opacity-50 small fw-bold text-uppercase mb-2">Frames Analyzed</div>
+                                    <h3 class="mb-0 text-info fw-bold">{{ result.frames_analyzed }}</h3>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card border border-secondary h-100 text-center p-3 shadow-sm" style="background: rgba(0,0,0,0.5);">
-                                    <div class="text-muted small fw-bold text-uppercase mb-2">Blinks Detected</div>
-                                    <h3 class="mb-0 text-info">{{ result.blinks_detected }}</h3>
+                                <div class="card border border-secondary h-100 text-center p-3 shadow-sm bg-transparent">
+                                    <div class="text-light opacity-50 small fw-bold text-uppercase mb-2">Blinks Detected</div>
+                                    <h3 class="mb-0 text-info fw-bold">{{ result.blinks_detected }}</h3>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card border border-secondary h-100 text-center p-3 shadow-sm" style="background: rgba(0,0,0,0.5);">
-                                    <div class="text-muted small fw-bold text-uppercase mb-2">Liveness Score</div>
-                                    <h3 class="mb-0 text-info">{{ result.texture_score }}</h3>
+                                <div class="card border border-secondary h-100 text-center p-3 shadow-sm bg-transparent">
+                                    <div class="text-light opacity-50 small fw-bold text-uppercase mb-2">Liveness Score</div>
+                                    <h3 class="mb-0 text-info fw-bold">{{ result.texture_score }}</h3>
                                 </div>
                             </div>
                         </div>
+
                         <h5 class="fw-bold mb-3 text-info"><i class="bi bi-search"></i> Forensic Evidence Log</h5>
-                        <ul class="list-group shadow-sm border-0">
+                        <ul class="list-group shadow-sm border border-secondary rounded">
                             {% for proof in result.evidence %}
-                                <li class="list-group-item bg-transparent border-secondary d-flex align-items-center">
+                                <li class="list-group-item bg-transparent border-bottom border-secondary d-flex align-items-center text-light py-3">
                                     <span class="me-3 fs-5">
                                         {% if "Corrupted" in result.status %}<i class="bi bi-exclamation-triangle-fill text-warning"></i>
                                         {% elif result.fake_score > 50 %}<i class="bi bi-x-circle-fill text-danger"></i>
                                         {% else %}<i class="bi bi-check-circle-fill text-success"></i>{% endif %}
                                     </span>
-                                    {{ proof }}
+                                    <span class="opacity-75">{{ proof }}</span>
                                 </li>
                             {% endfor %}
                         </ul>
                     </div>
 
                 {% elif type == 'image' %}
-                    <div class="p-4 border-bottom border-secondary text-center" style="background: rgba(0,0,0,0.3);">
+                    <div class="p-4 border-bottom border-secondary text-center" style="background: rgba(175, 64, 255, 0.05);">
                         <h3 class="mb-0 fw-bold" style="color: #af40ff;"><i class="bi bi-magic"></i> Image Authenticity Report</h3>
                     </div>
+
                     <div class="p-4 p-md-5">
                         {% if result.image_file %}
-                            <div class="text-center mb-4">
-                                <img src="{{ url_for('static', filename='uploads/' + result.image_file) }}" class="img-fluid rounded shadow-sm border border-secondary" style="max-height: 350px;">
+                            <div class="text-center mb-5">
+                                <img src="{{ url_for('static', filename='uploads/' + result.image_file) }}" class="img-fluid rounded shadow-lg border border-secondary" style="max-height: 400px; object-fit: contain;">
                             </div>
                         {% endif %}
+
                         {% if result.error %}
-                            <div class="alert alert-warning border-0 shadow-sm"><i class="bi bi-exclamation-triangle-fill"></i> <strong>Error:</strong> {{ result.error }}</div>
+                            <div class="alert border border-warning bg-transparent text-warning shadow-sm"><i class="bi bi-exclamation-triangle-fill"></i> <strong>Error:</strong> {{ result.error }}</div>
                         {% else %}
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <span class="fw-bold text-muted">AI Generation Probability</span>
-                                    <span class="fw-bold {% if result.is_ai %}text-danger{% else %}text-success{% endif %}">{{ result.ai_confidence }}%</span>
+                            <div class="mb-5">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-bold text-light opacity-75">AI Generation Probability</span>
+                                    <span class="fw-bold fs-5 {% if result.is_ai %}text-danger{% else %}text-success{% endif %}">{{ result.ai_confidence }}%</span>
                                 </div>
                                 <div class="progress" style="height: 12px; border-radius: 10px; background: rgba(255,255,255,0.1);">
                                     <div class="progress-bar {% if result.is_ai %}bg-danger{% else %}bg-success{% endif %}" role="progressbar" style="width: {{ result.ai_confidence }}%"></div>
                                 </div>
                             </div>
-                            <div class="alert {% if result.is_ai %}alert-danger{% else %}alert-success{% endif %} border-0 shadow-sm p-4 text-center mb-4">
-                                <h4 class="fw-bold mb-2 text-dark">
-                                    {% if result.is_ai %}<i class="bi bi-robot"></i> AI GENERATED{% else %}<i class="bi bi-camera"></i> LIKELY REAL{% endif %}
+
+                            <div class="alert border {% if result.is_ai %}border-danger{% else %}border-success{% endif %} bg-transparent shadow-sm p-4 text-center mb-5">
+                                <h4 class="fw-bold mb-3 text-light">
+                                    {% if result.is_ai %}<i class="bi bi-robot text-danger"></i> AI GENERATED{% else %}<i class="bi bi-camera text-success"></i> LIKELY REAL{% endif %}
                                 </h4>
-                                <p class="mb-0 fs-6 text-dark">{{ result.verdict_summary }}</p>
+                                <p class="mb-0 fs-5 text-light opacity-75">{{ result.verdict_summary }}</p>
                             </div>
-                            <div class="card border border-secondary bg-transparent">
-                                <div class="card-header border-bottom border-secondary fw-bold pt-3 pb-2 text-info">
+
+                            <div class="card border border-secondary bg-transparent shadow-sm">
+                                <div class="card-header border-bottom border-secondary fw-bold pt-3 pb-2 text-info bg-transparent">
                                     <i class="bi bi-zoom-in"></i> Identified Artifacts & Observations
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-0">
                                     <ul class="list-group list-group-flush bg-transparent">
                                         {% for artifact in result.artifacts_detected %}
-                                            <li class="list-group-item bg-transparent border-secondary"><i class="bi bi-dot fs-4 align-middle text-info"></i> {{ artifact }}</li>
+                                            <li class="list-group-item bg-transparent border-bottom border-secondary text-light opacity-75 py-3">
+                                                <i class="bi bi-dot fs-4 align-middle text-info"></i> {{ artifact }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                {% elif type == 'document' %}
+                    <div class="p-4 border-bottom border-secondary text-center" style="background: rgba(236, 72, 153, 0.05);">
+                        <h3 class="mb-0 fw-bold" style="color: #ec4899;"><i class="bi bi-file-earmark-check"></i> DocuGuard Analysis</h3>
+                    </div>
+
+                    <div class="p-4 p-md-5">
+                        {% if result.document_file %}
+                            <div class="text-center mb-5">
+                                <img src="{{ url_for('static', filename='uploads/' + result.document_file) }}" class="img-fluid rounded shadow-lg border border-secondary" style="max-height: 400px; object-fit: contain;">
+                            </div>
+                        {% endif %}
+                        
+                        {% if result.error %}
+                            <div class="alert border border-warning bg-transparent text-warning shadow-sm"><i class="bi bi-exclamation-triangle-fill"></i> <strong>Error:</strong> {{ result.error }}</div>
+                        {% else %}
+                            <div class="mb-5">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fw-bold text-light opacity-75">Forgery Probability</span>
+                                    <span class="fw-bold fs-5 {% if result.is_forged %}text-danger{% else %}text-success{% endif %}">{{ result.forgery_confidence }}%</span>
+                                </div>
+                                <div class="progress" style="height: 12px; border-radius: 10px; background: rgba(255,255,255,0.1);">
+                                    <div class="progress-bar {% if result.is_forged %}bg-danger{% else %}bg-success{% endif %}" role="progressbar" style="width: {{ result.forgery_confidence }}%"></div>
+                                </div>
+                            </div>
+
+                            <div class="alert border {% if result.is_forged %}border-danger{% else %}border-success{% endif %} bg-transparent shadow-sm p-4 text-center mb-5">
+                                <h4 class="fw-bold mb-3 text-light">
+                                    {% if result.is_forged %}<i class="bi bi-x-octagon-fill text-danger"></i> TAMPERING DETECTED{% else %}<i class="bi bi-check-circle-fill text-success"></i> LIKELY AUTHENTIC{% endif %}
+                                </h4>
+                                <p class="mb-0 fs-5 text-light opacity-75">{{ result.verdict_summary }}</p>
+                            </div>
+
+                            <div class="card border border-secondary bg-transparent mb-4 shadow-sm">
+                                <div class="card-header border-bottom border-secondary fw-bold pt-3 pb-2 text-info bg-transparent">
+                                    <i class="bi bi-text-paragraph"></i> Extracted Document Context
+                                </div>
+                                <div class="card-body py-4">
+                                    <p class="mb-0 text-light opacity-75 fs-6">{{ result.extracted_text_summary }}</p>
+                                </div>
+                            </div>
+
+                            <div class="card border border-secondary bg-transparent shadow-sm">
+                                <div class="card-header border-bottom border-secondary fw-bold pt-3 pb-2 text-info bg-transparent">
+                                    <i class="bi bi-search"></i> Forensic Anomalies Found
+                                </div>
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush bg-transparent">
+                                        {% for anomaly in result.anomalies_found %}
+                                            <li class="list-group-item bg-transparent border-bottom border-secondary d-flex align-items-center py-3">
+                                                <i class="bi bi-exclamation-circle fs-5 text-{% if result.is_forged %}danger{% else %}info{% endif %} me-3"></i> 
+                                                <span class="text-light opacity-75">{{ anomaly }}</span>
+                                            </li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -173,8 +246,8 @@
                     </div>
                 {% endif %}
 
-                <div class="p-4 border-top border-secondary d-flex justify-content-center" style="background: rgba(0,0,0,0.3);">
-                    <a href="/" class="uiverse-btn">
+                <div class="p-4 border-top border-secondary d-flex justify-content-center" style="background: rgba(0,0,0,0.2);">
+                    <a href="/" class="uiverse-btn" style="max-width: 300px;">
                         <span><i class="bi bi-arrow-clockwise"></i> Analyze Another File</span>
                     </a>
                 </div>
@@ -183,6 +256,8 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

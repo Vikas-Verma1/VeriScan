@@ -30,7 +30,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
+        <div class="col-lg-10 col-md-12">
             <div class="glass-card">
                 
                 <ul class="nav nav-pills custom-nav-pills nav-fill mb-4" id="pills-tab" role="tablist">
@@ -49,6 +49,11 @@
                             <i class="bi bi-image"></i> AI Image Check
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-doc-tab" data-bs-toggle="pill" data-bs-target="#pills-doc" type="button" role="tab">
+                            <i class="bi bi-file-earmark-lock"></i> DocuGuard
+                        </button>
+                    </li>
                 </ul>
 
                 <div class="tab-content" id="pills-tabContent">
@@ -62,9 +67,7 @@
                             <label class="form-label mb-2">Suspicious Website URL</label>
                             <div class="poda-container mb-4">
                                 <div class="glow"></div>
-                                <div class="darkBorderBg"></div>
-                                <div class="darkBorderBg"></div>
-                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
                                 <div class="white-glow"></div>
                                 <div class="border-glow"></div>
                                 <div class="main-input-wrap">
@@ -90,9 +93,7 @@
                             <label class="form-label mb-2">Upload Video File (.mp4, .avi)</label>
                             <div class="poda-container mb-4">
                                 <div class="glow"></div>
-                                <div class="darkBorderBg"></div>
-                                <div class="darkBorderBg"></div>
-                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
                                 <div class="white-glow"></div>
                                 <div class="border-glow"></div>
                                 <div class="main-input-wrap">
@@ -118,9 +119,7 @@
                             <label class="form-label mb-2">Upload Image (.jpg, .png)</label>
                             <div class="poda-container mb-4">
                                 <div class="glow"></div>
-                                <div class="darkBorderBg"></div>
-                                <div class="darkBorderBg"></div>
-                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
                                 <div class="white-glow"></div>
                                 <div class="border-glow"></div>
                                 <div class="main-input-wrap">
@@ -133,6 +132,32 @@
                             </div>
                             <button type="submit" class="uiverse-btn w-100">
                                 <span><i class="bi bi-fingerprint"></i> Scan Image Authenticity</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-doc" role="tabpanel">
+                        <div class="alert alert-custom bg-dark border border-secondary mb-4 text-center">
+                            <i class="bi bi-file-earmark-check text-info me-2"></i> 
+                            <span class="text-light small">Upload a document to check for forged text, mismatched fonts, or altered numbers.</span>
+                        </div>
+                        <form action="/scan_document" method="POST" enctype="multipart/form-data" onsubmit="startAnalysis('Analyzing Document Integrity...')">
+                            <label class="form-label mb-2">Upload Document (Image .jpg, .png)</label>
+                            <div class="poda-container mb-4">
+                                <div class="glow"></div>
+                                <div class="darkBorderBg"></div><div class="darkBorderBg"></div><div class="darkBorderBg"></div>
+                                <div class="white-glow"></div>
+                                <div class="border-glow"></div>
+                                <div class="main-input-wrap">
+                                    <input type="file" name="document" class="input-uiverse" accept="image/*" required>
+                                    <div class="pink-mask"></div>
+                                    <div class="filterBorder"></div>
+                                    <div class="filter-icon-wrap"><i class="bi bi-file-text text-light"></i></div>
+                                    <div class="search-icon-wrap"><i class="bi bi-cloud-upload"></i></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="uiverse-btn w-100">
+                                <span><i class="bi bi-shield-check"></i> Verify Document</span>
                             </button>
                         </form>
                     </div>
@@ -157,4 +182,3 @@
 
 </body>
 </html>
-
