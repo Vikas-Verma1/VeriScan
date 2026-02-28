@@ -1,7 +1,21 @@
+# Web Framework
 Flask
-opencv-python
-numpy
-ultralytics
+
+# Security & Environment Variables
+python-dotenv
+
+# Google Gemini API (New SDK)
+google-genai
+
+# HTTP Requests (For Sandbox API)
 requests
+
+# Computer Vision & Deepfake Forensics
+opencv-python
 mediapipe
-hachoir
+Pillow
+numpy
+
+# Audio Forensics
+librosa
+soundfile
