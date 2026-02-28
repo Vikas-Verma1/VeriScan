@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriScan | Authenticity Suite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div id="loading-overlay">
+    <div class="loader-content">
+        <div class="spinner-border mb-3" role="status" style="width: 3rem; height: 3rem; color: #af40ff;"></div>
+        <h4 class="blink-text" id="loading-text">Initializing AI Models...</h4>
+        <p class="text-muted small mb-0 mt-2">Analyzing pixels, frames, and patterns.</p>
+        <div class="progress-container">
+            <div class="progress-bar-animated"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header-container text-center">
+        <h1 class="brand-title"><i class="bi bi-shield-check"></i> VeriScan</h1>
+        <p class="text-light opacity-75 fs-5">The AI-Powered Digital Authenticity Suite</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="glass-card">
+                
+                <ul class="nav nav-pills custom-nav-pills nav-fill mb-4" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-phish-tab" data-bs-toggle="pill" data-bs-target="#pills-phish" type="button" role="tab">
+                            <i class="bi bi-link-45deg"></i> PhishGuard
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-fake-tab" data-bs-toggle="pill" data-bs-target="#pills-fake" type="button" role="tab">
+                            <i class="bi bi-camera-video"></i> DeepFake Video
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-image-tab" data-bs-toggle="pill" data-bs-target="#pills-image" type="button" role="tab">
+                            <i class="bi bi-image"></i> AI Image Check
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    
+                    <div class="tab-pane fade show active" id="pills-phish" role="tabpanel">
+                        <div class="alert alert-custom bg-dark border border-secondary mb-4 text-center">
+                            <i class="bi bi-info-circle-fill text-info me-2"></i> 
+                            <span class="text-light small">We use AI Vision to match brand logos against URL domains safely in a sandbox.</span>
+                        </div>
+                        <form action="/scan_phish" method="POST" onsubmit="startAnalysis('Scanning Website Structure...')">
+                            <label class="form-label mb-2">Suspicious Website URL</label>
+                            <div class="poda-container mb-4">
+                                <div class="glow"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="white-glow"></div>
+                                <div class="border-glow"></div>
+                                <div class="main-input-wrap">
+                                    <input placeholder="https://secure-login-paypal.com" type="url" name="url" class="input-uiverse" required>
+                                    <div class="pink-mask"></div>
+                                    <div class="filterBorder"></div>
+                                    <div class="filter-icon-wrap"><i class="bi bi-sliders text-light"></i></div>
+                                    <div class="search-icon-wrap"><i class="bi bi-search"></i></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="uiverse-btn w-100">
+                                <span><i class="bi bi-radar"></i> Scan URL Now</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-fake" role="tabpanel">
+                        <div class="alert alert-custom bg-dark border border-secondary mb-4 text-center">
+                            <i class="bi bi-person-bounding-box text-info me-2"></i> 
+                            <span class="text-light small">We analyze blink patterns, eye liveness, and facial artifacts to detect Wav2Lip or Viggle.</span>
+                        </div>
+                        <form action="/scan_deepfake" method="POST" enctype="multipart/form-data" onsubmit="startAnalysis('Processing Video Frames...')">
+                            <label class="form-label mb-2">Upload Video File (.mp4, .avi)</label>
+                            <div class="poda-container mb-4">
+                                <div class="glow"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="white-glow"></div>
+                                <div class="border-glow"></div>
+                                <div class="main-input-wrap">
+                                    <input type="file" name="video" class="input-uiverse" accept="video/*" required>
+                                    <div class="pink-mask"></div>
+                                    <div class="filterBorder"></div>
+                                    <div class="filter-icon-wrap"><i class="bi bi-film text-light"></i></div>
+                                    <div class="search-icon-wrap"><i class="bi bi-cloud-upload"></i></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="uiverse-btn w-100">
+                                <span><i class="bi bi-play-circle"></i> Analyze Media Forensics</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-image" role="tabpanel">
+                        <div class="alert alert-custom bg-dark border border-secondary mb-4 text-center">
+                            <i class="bi bi-magic text-info me-2"></i> 
+                            <span class="text-light small">Upload an image to check for Midjourney, DALL-E, or Stable Diffusion artifacts.</span>
+                        </div>
+                        <form action="/scan_image" method="POST" enctype="multipart/form-data" onsubmit="startAnalysis('Analyzing Image Forensics...')">
+                            <label class="form-label mb-2">Upload Image (.jpg, .png)</label>
+                            <div class="poda-container mb-4">
+                                <div class="glow"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="darkBorderBg"></div>
+                                <div class="white-glow"></div>
+                                <div class="border-glow"></div>
+                                <div class="main-input-wrap">
+                                    <input type="file" name="image" class="input-uiverse" accept="image/*" required>
+                                    <div class="pink-mask"></div>
+                                    <div class="filterBorder"></div>
+                                    <div class="filter-icon-wrap"><i class="bi bi-images text-light"></i></div>
+                                    <div class="search-icon-wrap"><i class="bi bi-cloud-upload"></i></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="uiverse-btn w-100">
+                                <span><i class="bi bi-fingerprint"></i> Scan Image Authenticity</span>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="text-center mt-4 text-muted small opacity-75">
+                Powered by Python Flask, OpenCV & Gemini AI
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function startAnalysis(message) {
+        document.getElementById('loading-overlay').style.display = 'flex';
+        document.getElementById('loading-text').innerText = message;
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriScan | Authenticity Suite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<div id="loading-overlay">
+    <div class="loader-content">
+        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+        <h4 class="blink-text" id="loading-text">Initializing AI Models...</h4>
+        <p class="text-muted small mb-0 mt-2">Analyzing pixels, frames, and patterns.</p>
+        <div class="progress-container">
+            <div class="progress-bar-animated"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header-container text-center">
+        <h1 class="brand-title"><i class="bi bi-shield-check text-primary"></i> VeriScan</h1>
+        <p class="text-muted fs-5">The AI-Powered Digital Authenticity Suite</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="glass-card">
+                
+                <ul class="nav nav-pills custom-nav-pills nav-fill mb-4" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-phish-tab" data-bs-toggle="pill" data-bs-target="#pills-phish" type="button" role="tab" aria-selected="true">
+                            <i class="bi bi-link-45deg"></i> PhishGuard
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-fake-tab" data-bs-toggle="pill" data-bs-target="#pills-fake" type="button" role="tab" aria-selected="false">
+                            <i class="bi bi-camera-video"></i> DeepFake Video
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-image-tab" data-bs-toggle="pill" data-bs-target="#pills-image" type="button" role="tab" aria-selected="false">
+                            <i class="bi bi-image"></i> AI Image Check
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    
+                    <div class="tab-pane fade show active" id="pills-phish" role="tabpanel" tabindex="0">
+                        <div class="alert alert-secondary border-0 bg-light rounded-3 mb-4">
+                            <i class="bi bi-info-circle-fill text-primary me-2"></i> 
+                            <span class="text-secondary small">We use AI Vision to match brand logos against URL domains safely in a sandbox.</span>
+                        </div>
+                        <form action="/scan_phish" method="POST" onsubmit="startAnalysis('Scanning Website Structure...')">
+                            <div class="mb-4">
+                                <label class="form-label">Suspicious Website URL</label>
+                                <input type="url" name="url" class="form-control" placeholder="https://secure-login-paypal.com" required>
+                            </div>
+                            <button type="submit" class="btn btn-modern btn-primary-custom w-100">
+                                <i class="bi bi-search"></i> Scan URL Now
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-fake" role="tabpanel" tabindex="0">
+                        <div class="alert alert-secondary border-0 bg-light rounded-3 mb-4">
+                            <i class="bi bi-person-bounding-box text-dark me-2"></i> 
+                            <span class="text-secondary small">We analyze blink patterns, eye liveness, and facial artifacts to detect Wav2Lip or Viggle.</span>
+                        </div>
+                        <form action="/scan_deepfake" method="POST" enctype="multipart/form-data" onsubmit="startAnalysis('Processing Video Frames...')">
+                            <div class="mb-4">
+                                <label class="form-label">Upload Video File (.mp4, .avi)</label>
+                                <input type="file" name="video" class="form-control" accept="video/*" required>
+                            </div>
+                            <button type="submit" class="btn btn-modern btn-dark-custom w-100">
+                                <i class="bi bi-play-circle"></i> Analyze Media Forensics
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-image" role="tabpanel" tabindex="0">
+                        <div class="alert alert-secondary border-0 bg-light rounded-3 mb-4">
+                            <i class="bi bi-magic text-purple me-2" style="color: #a855f7;"></i> 
+                            <span class="text-secondary small">Upload an image to check for Midjourney, DALL-E, or Stable Diffusion artifacts.</span>
+                        </div>
+                        <form action="/scan_image" method="POST" enctype="multipart/form-data" onsubmit="startAnalysis('Analyzing Image Forensics...')">
+                            <div class="mb-4">
+                                <label class="form-label">Upload Image (.jpg, .png)</label>
+                                <input type="file" name="image" class="form-control" accept="image/*" required>
+                            </div>
+                            <button type="submit" class="btn btn-modern btn-accent-custom w-100">
+                                <i class="bi bi-fingerprint"></i> Scan Image Authenticity
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="text-center mt-4 text-muted small opacity-75">
+                Powered by Python Flask, OpenCV & Gemini AI
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function startAnalysis(message) {
+        document.getElementById('loading-overlay').style.display = 'flex';
+        document.getElementById('loading-text').innerText = message;
+    }
+</script>
+
+</body>
+</html>
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriScan | Authenticity Suite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<div id="loading-overlay">
+    <div class="loader-content">
+        <h3 class="blink-text" id="loading-text">Initializing AI Models...</h3>
+        <p class="text-muted">Analyzing pixels, frames, and patterns.</p>
+        <div class="progress-container">
+            <div class="progress-bar-animated"></div>
+        </div>
+        <small class="text-muted mt-2 d-block">Please wait, this may take up to 10 seconds.</small>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="header-title">🛡️ VeriScan</h1>
+        <p class="text-muted">The AI-Powered Digital Authenticity Suite</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4">
+                <ul class="nav nav-pills mb-4 nav-justified" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="phish-tab" data-bs-toggle="pill" data-bs-target="#pills-phish" type="button">
+                            🎣 PhishGuard Vision
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="fake-tab" data-bs-toggle="pill" data-bs-target="#pills-fake" type="button">
+                            🕵️ DeepFake Sentry
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    
+                    <div class="tab-pane fade show active" id="pills-phish">
+                        <div class="alert alert-light border">
+                            <h5>Analyze Suspicious Website</h5>
+                            <p class="mb-0 text-muted small">We use Computer Vision to match brand logos against URL domains.</p>
+                        </div>
+                        <form action="/scan_phish" method="POST" onsubmit="startAnalysis('Scanning Website Structure...')">
+                            <label class="form-label fw-bold">Website URL</label>
+                            <input type="text" name="url" class="form-control mb-3 p-3" placeholder="Enter URL (e.g., https://secure-login-paypal.com)" required>
+                            <button type="submit" class="btn btn-primary w-100 p-2 fw-bold">🔍 Scan URL Now</button>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-fake">
+                        <div class="alert alert-light border">
+                            <h5>Analyze Video for AI Manipulation</h5>
+                            <p class="mb-0 text-muted small">We analyze blink patterns, eye liveness, and facial artifacts.</p>
+                        </div>
+                        <form action="/scan_deepfake" method="POST" enctype="multipart/form-data" onsubmit="startAnalysis('Processing Video Frames...')">
+                            <label class="form-label fw-bold">Upload Video (MP4/AVI)</label>
+                            <input type="file" name="video" class="form-control mb-3 p-3" accept="video/*" required>
+                            <button type="submit" class="btn btn-dark w-100 p-2 fw-bold">🕵️ Analyze Media</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="text-center mt-4 text-muted small">
+                Powered by OpenCV & Python Flask
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function startAnalysis(message) {
+        // 1. Show the overlay
+        document.getElementById('loading-overlay').style.display = 'flex';
+        // 2. Set the custom text (e.g. "Scanning Website..." or "Processing Video...")
+        document.getElementById('loading-text').innerText = message;
+    }
+</script>
+
+</body>
+</html>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VeriScan | Authenticity Suite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; }
+        .card { border: none; shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .header-title { color: #2c3e50; font-weight: bold; }
+        .nav-pills .nav-link.active { background-color: #2c3e50; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="header-title">🛡️ VeriScan</h1>
+        <p class="text-muted">The AI-Powered Digital Authenticity Suite</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="phish-tab" data-bs-toggle="pill" data-bs-target="#pills-phish" type="button">🎣 PhishGuard Vision</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="fake-tab" data-bs-toggle="pill" data-bs-target="#pills-fake" type="button">🕵️ DeepFake Sentry</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-phish">
+                        <h5>Analyze Suspicious Website</h5>
+                        <p>We use Computer Vision to match logos against domains.</p>
+                        <form action="/scan_phish" method="POST">
+                            <input type="text" name="url" class="form-control mb-3" placeholder="Enter URL (e.g., https://login-paypal-secure.com)" required>
+                            <button type="submit" class="btn btn-primary w-100">Scan URL</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="pills-fake">
+                        <h5>Analyze Video for AI Manipulation</h5>
+                        <p>We analyze blink patterns and facial artifacts.</p>
+                        <form action="/scan_deepfake" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="video" class="form-control mb-3" accept="video/*" required>
+                            <button type="submit" class="btn btn-dark w-100">Analyze Media</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
