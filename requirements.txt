@@ -1,21 +1,11 @@
-# Web Framework
 Flask
-
-# Security & Environment Variables
+gunicorn
 python-dotenv
-
-# Google Gemini API (New SDK)
 google-genai
-
-# HTTP Requests (For Sandbox API)
 requests
-
-# Computer Vision & Deepfake Forensics
-opencv-python
+opencv-python-headless
 mediapipe
 Pillow
 numpy
-
-# Audio Forensics
 librosa
 soundfile
