@@ -39,39 +39,42 @@ VeriScan is a comprehensive, enterprise-grade cybersecurity web application desi
 
 Follow these steps to run VeriScan on your local machine.
 
-### 1. Clone the Repository
+## 1. Clone the Repository
 
-git clone https://github.com/YourUsername/VeriScan.git
-cd VeriScan
-
-
-### 2. Create a Virtual Environment
+- git clone https://github.com/YourUsername/VeriScan.git
+- cd VeriScan
 
 
-# On Windows:
-python -m venv venv
-venv\Scripts\activate
-
-# On Mac/Linux:
-source venv/bin/activate
+## 2. Create a Virtual Environment
 
 
-### 3. Install Dependencies
+### On Windows:
+- python -m venv venv
 
-pip install -r requirements.txt
+- venv\Scripts\activate
 
+### On Mac/Linux:
 
-### 4. Set Up Environment Variables
-Create a file named .env in the root directory and add your API keys:
-
-
-**GEMINI_API_KEY**=your_gemini_api_key_here
-**SCREENSHOT_API_KEY**=your_screenshot_api_key_here
+- source venv/bin/activate
 
 
-### 5. Run the Application
+## 3. Install Dependencies
 
-python app.py
+- pip install -r requirements.txt
+
+
+## 4. Set Up Environment Variables
+
+- Create a file named .env in the root directory and add your API keys:
+
+
+- **GEMINI_API_KEY**=your_gemini_api_key_here
+- **SCREENSHOT_API_KEY**=your_screenshot_api_key_here
+
+
+## 5. Run the Application
+
+- python app.py
 
 
 **The app will now be running at http://127.0.0.1:5000.**
